@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using BabyFoodApp.Data.IdentityModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BabyFoodApp.Data
@@ -9,5 +10,7 @@ namespace BabyFoodApp.Data
             : base(options)
         {
         }
+
+        public DbSet<Recipe> Recipes { get; set; }
     }
 }
