@@ -22,11 +22,14 @@
                         @*<li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Recipe" asp-action="All">All Recipes</a>
                         </li>*@
-                       @* @if(this.User.Identity.IsAuthenticated)
+                       @* @if(this.User?.Identity != null && this.User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Recipe" asp-action="Favorites">Favorites</a>
                             </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Recipe" asp-action="My Recipes">Favorites</a>
+                        </li>
                         <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Recipe" asp-action="Add">Add Recipe</a>
                         </li>
