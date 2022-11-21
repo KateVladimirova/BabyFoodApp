@@ -56,13 +56,13 @@ namespace BabyFoodApp.Controllers
                     ModelState.TryAddModelError(error.Code, error.Description);
                 }
 
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                //return RedirectToAction(nameof(HomeController.Index), "Home");
 
-                //return View(model);
+                return View(model);
             }
 
-            return RedirectToAction(nameof(HomeController.Privacy), "Home");
-            //return RedirectToAction(nameof(HomeController.Index), "Home");
+            //return RedirectToAction(nameof(HomeController.Privacy), "Home");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
 
         }
     }
