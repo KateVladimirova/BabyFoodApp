@@ -21,7 +21,7 @@ namespace BabyFoodApp.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-
+        [ValidateAntiForgeryToken]
         public IActionResult Register()
         {
             if (User?.Identity?.IsAuthenticated ?? false)
@@ -73,6 +73,7 @@ namespace BabyFoodApp.Controllers
 
         [HttpGet]
         [AllowAnonymous]
+        [ValidateAntiForgeryToken]
         public IActionResult Login()
         {
             //if (User?.Identity?.IsAuthenticated ?? false)
@@ -113,5 +114,15 @@ namespace BabyFoodApp.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }
