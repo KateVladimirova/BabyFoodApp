@@ -28,18 +28,20 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Recipe" asp-action="Favorites">Favorites</a>
                             </li>
-                        <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Recipe" asp-action="My Recipes">Favorites</a>
-                        </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Recipe" asp-action="Mine">My Recipes</a>
+                                    </li>
+                       
                         <li class="nav-item">
                         <a class="nav-link text-dark" asp-area="" asp-controller="Recipe" asp-action="Add">Add Recipe</a>
                         </li>
                         }
-
+@*
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        
+                        *@
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

@@ -124,5 +124,27 @@ namespace BabyFoodApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [HttpPost]
+        public async Task<ActionResult> DeleteUser(string Id)
+        {
+           var userToDelete = await userManager.FindByIdAsync(Id);
+
+            if (userToDelete != null)
+            {
+                IdentityResult result = await userManager.DeleteAsync(userToDelete);
+
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                foreach(var error in result.Errors)
+                {
+                    ModelState.AddModelError("", "");
+                }
+            }
+
+            return View(Id);
+        }
     }
 }
