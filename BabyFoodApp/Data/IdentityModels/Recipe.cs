@@ -14,12 +14,7 @@ namespace BabyFoodApp.Data.IdentityModels
         [StringLength(Constants.RecipeNameMaxLenght,
             MinimumLength = Constants.RecipeNameMinLenght)]
         public string Name { get; set; } = null!;
-
-        [Required]
-        [StringLength(Constants.RecipeDescriptionMaxLenght, 
-            MinimumLength = Constants.RecipeDescriptionMinLenght)]
-        public string Description { get; set; } = null!;
-
+               
         [Required]
         public int CookingTime { get; set; }
 
@@ -36,10 +31,20 @@ namespace BabyFoodApp.Data.IdentityModels
         public Category Category { get; set; }
 
         [Required]
+        public string ImageUrl { get; set; } = null!;
+
+        [Required]
+        [StringLength(Constants.RecipeDescriptionMaxLenght,
+           MinimumLength = Constants.RecipeDescriptionMinLenght)]
+        public string Description { get; set; } = null!;
+
+        [Required]
         public string UserId { get; set; } = null!;
        
         [ForeignKey(nameof(UserId))]
         public User User { get; set; } = null!;
+
+        //public bool IsActive = true;
 
 
     }

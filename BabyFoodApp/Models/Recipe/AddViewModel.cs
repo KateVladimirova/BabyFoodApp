@@ -28,8 +28,13 @@ namespace BabyFoodApp.Models.Recipe
         public Category Category { get; set; }
 
         [Required]
+        public string ImageUrl { get; set; } = null!;
+
+        [Required]
         [StringLength(Constants.RecipeDescriptionMaxLenght,
             MinimumLength = Constants.RecipeDescriptionMinLenght)]
         public string Description { get; set; } = null!;
+
+
     }
 }

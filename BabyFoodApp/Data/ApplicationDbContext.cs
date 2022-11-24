@@ -16,6 +16,8 @@ namespace BabyFoodApp.Data
 
         public DbSet<BabyFoodApp.Models.Recipe.DetailsRecipeViewModel> DetailsRecipeViewModel { get; set; }
 
+        public DbSet<BabyFoodApp.Models.Recipe.AddViewModel> AddViewModel { get; set; }
+
       //  public DbSet<BabyFoodApp.Models.Recipe.AddViewModel> AddViewModel { get; set; }
       //
       //  public DbSet<BabyFoodApp.Models.Recipe.AllRecipesViewModel> AllRecipesViewModel { get; set; }
