@@ -84,20 +84,39 @@ namespace BabyFoodApp.Controllers
         //POST: RecipeController/MyRecipes
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> Mine()
+        public async Task<IEnumerable<MineViewModel>> Mine()
         {
-            IEnumerable<Recipe> myR = new List<Recipe>();
+            var logedInUser  = User?.Identity?.Name;
+            var userName = await userManager.FindByNameAsync(logedInUser);
 
-            var logedInUser = User?.Identity?.Name;
-            var userId = await userManager.FindByNameAsync(logedInUser);
-
-            myR = await data.Recipes
-               .Where(r => r.UserId == userId.Id)
+            return await data.Recipes
+               .Where(r => r.UserId == userName.Id.ToString())
                .Where(r => r.IsActive == true)
+               .Select(r => new MineViewModel()
+               {
+                   Id = r.Id,
+                   Name = r.Name,
+                   ImageUrl = r.ImageUrl,
+               })
+               .OrderByDescending(r => r.Id)
                .ToListAsync();
 
 
-            return View(myR);
+            //AllRecipesViewModel model = new AllRecipesViewModel();
+
+            //IEnumerable<Recipe> myRecipes = new List<Recipe>();
+
+            //var logedInUser = User?.Identity?.Name;
+            //var userId = await userManager.FindByNameAsync(logedInUser);
+
+            //myRecipes = await data.Recipes
+            //   .Where(r => r.UserId == userId.Id)
+            //   .Where(r => r.IsActive == true)
+            //   .OrderByDescending(r => r.Id)
+            //   .ToListAsync();
+
+
+            //return View(myRecipes);
         }
 
         // GET: RecipeController/Add
