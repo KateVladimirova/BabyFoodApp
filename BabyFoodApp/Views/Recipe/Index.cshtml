@@ -1,0 +1,71 @@
+﻿@using BabyFoodApp.Data.Enums
+@model AddViewModel
+
+@{
+    ViewBag.Title = "Add Recipe";
+}
+
+<h1>@ViewBag.Title </h1>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-controller="recipe" asp-action="add" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" name="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CookingTime" class="control-label"></label>
+                <input asp-for="CookingTime" name="CookingTime" class="form-control" />
+                <span asp-validation-for="CookingTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.PreparationTime" class="control-label"></label>
+                <input asp-for="@Model.PreparationTime" class="form-control" />
+                <span asp-validation-for="@Model.PreparationTime" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.TotalTime" class="control-label"></label>
+                <input asp-for="@Model.TotalTime" class="form-control" />
+                <span asp-validation-for="@Model.TotalTime" class="text-danger"></span>
+            </div>
+           @* <div class="form-group">
+                <label asp-for="@Model.ChildAge" class="control-label"></label>
+                <form asp-controller="Recipe" asp-action="AgeFilter" method="post">
+                    <select asp-for="@Model.ChildAge" class="form-control" asp-items="Html.GetEnumSelectList<Age>()"></select>
+                    <span asp-validation-for="@Model.Category" class="text-danger"></span>
+                </form>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Category" class="control-label"></label>
+                <form asp-controller="Recipe" asp-action="CategoryFilter" method="post">
+                    <select asp-for="@Model.Category" class="form-control" asp-items="Html.GetEnumSelectList<Category>()"></select>
+                    <span asp-validation-for="@Model.Category" class="text-danger"></span>
+                </form>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="@Model.ImageUrl" class="control-label"></label>
+                <input asp-for="@Model.ImageUrl" class="form-control" />
+                <span asp-validation-for="@Model.ImageUrl" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Description" class="control-label"></label>
+                <input asp-for="@Model.Description" class="form-control" />
+                <span asp-validation-for="@Model.Description" class="text-danger"></span>
+            </div>
+            @*            <input class="btn btn-primary mt-3" type="submit" value="Save"/>
+            *@              <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

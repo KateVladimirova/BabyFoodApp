@@ -87,11 +87,9 @@ namespace BabyFoodApp.Controllers
             //    return RedirectToAction("Index", "Home");
             //}
 
-            var model =  new LoginViewModel();
-
             //model.ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
-            return View(model);
+            return View();
         }
 
         [HttpPost]
@@ -153,14 +151,14 @@ namespace BabyFoodApp.Controllers
             return View(Id);
         }
 
-        //public async Task<string> GetCurrentUser()
-        //{
-        //    var userId =  User.FindFirstValue(ClaimTypes.NameIdentifier);
-        //    //var user = await userManager.FindByIdAsync(userId);
-        //    var currentUser =  data.Users.FirstOrDefault(x => x.Id == userId);
+        public async Task<string> GetCurrentUser()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var user = await userManager.FindByIdAsync(userId);
+            var currentUser = data.Users.FirstOrDefault(x => x.Id == userId);
 
-        //    return  userId;
-        //}
+            return userId;
+        }
 
 
 
@@ -176,6 +174,6 @@ namespace BabyFoodApp.Controllers
 
         //    return user.Id;
         //}
-        
+
     }
 }

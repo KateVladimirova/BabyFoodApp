@@ -28,6 +28,7 @@ namespace BabyFoodApp.Models.Recipe
         [Required]
         public int TotalTime { get; set; }
 
-
+        [Required]
+        public string ImageUrl { get; set; } = null!;
     }
 }

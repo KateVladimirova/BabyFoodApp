@@ -10,7 +10,8 @@ namespace BabyFoodApp.Models.Recipe
         public int Id { get; set; }
 
         [Required]
-        public string Name { get; set; } = null!;
+        //[Display("Name")]
+        public string Name { get; set; } = null!; 
 
         [Required]
         public int CookingTime { get; set; }
@@ -34,7 +35,6 @@ namespace BabyFoodApp.Models.Recipe
         [StringLength(Constants.RecipeDescriptionMaxLenght,
             MinimumLength = Constants.RecipeDescriptionMinLenght)]
         public string Description { get; set; } = null!;
-
 
     }
 }

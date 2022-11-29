@@ -1,20 +1,28 @@
 ﻿using BabyFoodApp.Data;
 using BabyFoodApp.Data.Enums;
 using BabyFoodApp.Data.IdentityModels;
+using BabyFoodApp.Models;
 using BabyFoodApp.Models.Recipe;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BabyFoodApp.Controllers
 {
     public class RecipeController : Controller
     {
         public readonly ApplicationDbContext data;
-
-        public RecipeController(ApplicationDbContext _data)
+        public readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
+        public RecipeController(ApplicationDbContext _data,
+            UserManager<IdentityUser> _userManager,
+            SignInManager<IdentityUser> _signInManager)
         {
             data = _data;
+            userManager = _userManager;
+            signInManager = _signInManager;
         }
 
 
@@ -24,9 +32,8 @@ namespace BabyFoodApp.Controllers
             return View();
         }
 
-
-
         // GET: RecipeController/All
+        [HttpGet]
         public ActionResult All()
         {
             var model = new AllRecipesViewModel();
@@ -39,6 +46,9 @@ namespace BabyFoodApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> All(IFormCollection collection)
         {
+            //var recipes = await data.Recipes
+            //    .AnyAsync(r => r.IsActive)
+
             try
             {
                 return RedirectToAction(nameof(Index));
@@ -49,64 +59,89 @@ namespace BabyFoodApp.Controllers
             }
         }
 
-        // GET: RecipeController/MyRecipes
+        //// GET: RecipeController/MyRecipes
+        //[HttpGet]
+        //[Authorize]
+        //public IActionResult Mine()
+        //{
+        //    List<Recipe> myRecipes = new List<Recipe>();
 
+
+        //    myRecipes = data.Recipes
+        //       .Where(r => r.UserId == userId.Id)
+        //       .Where(r => r.IsActive == true)
+        //       .Select(r => new Recipe()
+        //       {
+        //           Name = r.Name,
+        //           ImageUrl = r.ImageUrl
+        //       })
+        //       .ToListAsync();
+
+        //    return View(myRecipes);
+
+        //}
+
+        //POST: RecipeController/MyRecipes
         [HttpGet]
         [Authorize]
-        public ActionResult Mine()
+        public async Task<IActionResult> Mine()
         {
-            var model = new MineViewModel();
+            IEnumerable<Recipe> myR = new List<Recipe>();
 
-            return View(model);
-        }
+            var logedInUser = User?.Identity?.Name;
+            var userId = await userManager.FindByNameAsync(logedInUser);
 
-        // POST: RecipeController/MyRecipes
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Mine(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            myR = await data.Recipes
+               .Where(r => r.UserId == userId.Id)
+               .Where(r => r.IsActive == true)
+               .ToListAsync();
+
+
+            return View(myR);
         }
 
         // GET: RecipeController/Add
+        [HttpGet]
         public ActionResult Add()
         {
-            var model = new AddViewModel();
+            //var model = new AddViewModel();
 
-            return View(model);
+            return View();
         }
 
         //POST: RecipeController/Add
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Add(AddViewModel model)
+        public async Task<ActionResult> Add(AddViewModel model) //, string userId)
         {
-                var recipe = new Recipe()
-                {
-                    Name = model.Name,
-                    CookingTime = model.CookingTime,
-                    PreparationTime = model.PreparationTime,
-                    TotalTime = model.TotalTime,
-                    ChildAge = model.ChildAge,
-                    Category = model.Category,
-                    ImageUrl = model.ImageUrl,
-                    Description = model.Description
-                };
+            //if (!ModelState.IsValid)
+            //{
+            //    return View(model);
+            //}
 
-                await data.AddAsync(recipe);
-                await data.SaveChangesAsync();
+            var logedInUser = User?.Identity?.Name;
+            var userId = await userManager.FindByNameAsync(logedInUser);
 
-                return RedirectToAction("All", "Recipe");
-                //return RedirectToAction("Details", recipe.Id); //To see how to find the recipe
+
+            var recipe = new Recipe()
+            {
+                Name = model.Name,
+                CookingTime = model.CookingTime,
+                PreparationTime = model.PreparationTime,
+                TotalTime = model.TotalTime,
+                ChildAge = model.ChildAge,
+                Category = model.Category,
+                ImageUrl = model.ImageUrl,
+                Description = model.Description,
+                UserId = userId.Id
+            };
+
+            await data.AddAsync(recipe);
+            await data.SaveChangesAsync();
+
+            return RedirectToAction("Mine", "Recipe");
+            //return RedirectToAction("Details", recipe.Id); //To see how to find the recipe
         }
 
         // GET: RecipeController/Details/5
@@ -161,25 +196,7 @@ namespace BabyFoodApp.Controllers
             }
         }
 
-        //public async Task<IEnumerable<Recipe>> AllRecipesByUserId(string userId)
-        //{
-        //    return await data.Recipes
-        //        .Where(r => r.UserId == userId)
-        //        .Where(r => r.IsActive)
-        //        .Select(r => new Recipe()
-        //        {
-        //            Name = r.Name,
-        //            CookingTime = r.CookingTime,
-        //            PreparationTime = r.PreparationTime,
-        //            TotalTime = r.TotalTime,
-        //            ChildAge = r.ChildAge,
-        //            Category = r.Category,
-        //            ImageUrl = r.ImageUrl,
-        //            Description = r.Description,
-        //            UserId = userId
-        //        })
-        //        .ToListAsync();
-        //}
+
         public async Task<IEnumerable<Age>> AgeFilter()
         {
             return await data.Recipes
