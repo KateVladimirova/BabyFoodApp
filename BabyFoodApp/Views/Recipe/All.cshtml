@@ -1,4 +1,4 @@
-﻿@*@model AllRecipesViewModel
+﻿@model List<AllRecipesViewModel>
 
 @{
     ViewBag.Title = "All Recipes";
@@ -11,14 +11,13 @@
     <h2 class="text-center">You have no recipes added for the moment!</h2>
 }
 
-@foreach (var item in Model)
+
+<table class="table">
+@foreach (var recipe in @Model)
 {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.text)
-        </td>
-        <td>
-            @Html.ActionLink("x", "Delete", new { id = item.id })
-        </td>
+         <td>@Html.DisplayFor(modelItem => recipe.Name)</td>
+         <td><img style="width: auto; height: 100px" src="@Html.DisplayFor(modelItem => recipe.ImageUrl)"></td>
     </tr>
-}*@
+}
+</table>

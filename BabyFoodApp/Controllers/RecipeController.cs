@@ -6,6 +6,7 @@ using BabyFoodApp.Models.Recipe;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
@@ -32,25 +33,21 @@ namespace BabyFoodApp.Controllers
             return View();
         }
 
-        // GET: RecipeController/All
-        [HttpGet]
-        public ActionResult All()
+        //POST: RecipeController/All
+        [HttpGet]        
+        public async Task<ActionResult> All()
         {
-            var model = new AllRecipesViewModel();
+            var recipes = await data.Recipes
+                .Where(r => r.IsActive)
+                 .Select(r => new AllRecipesViewModel()
+                 {
+                     Name = r.Name,
+                     ImageUrl = r.ImageUrl,
+                 })
+               .ToListAsync(); ;
 
-            return View(model);
+            return View(recipes);
         }
-
-        // POST: RecipeController/All
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<AllRecipesViewModel> All()
-        //{
-        //    var recipes = await data.Recipes
-        //        .AnyAsync(r => r.IsActive);
-
-        //   return View();
-        //}
 
         //GET: RecipeController/MyRecipes
         [HttpGet]
@@ -58,11 +55,11 @@ namespace BabyFoodApp.Controllers
         public async Task<ActionResult> Mine()
         {
             var logedInUser = User?.Identity?.Name;
-            var userName =  await userManager.FindByNameAsync(logedInUser);
+            var userName = await userManager.FindByNameAsync(logedInUser);
 
-            var r =  await data.Recipes
-               .Where(r => r.UserId == userName.Id.ToString() 
-                      && r.IsActive == true)               
+            var r = await data.Recipes
+               .Where(r => r.UserId == userName.Id.ToString()
+                      && r.IsActive == true)
                .Select(r => new MineViewModel()
                {
                    Name = r.Name,
@@ -72,28 +69,6 @@ namespace BabyFoodApp.Controllers
 
             return View(r);
         }
-
-        ////GET: RecipeController/MyRecipes
-        //[HttpGet]
-        //[Authorize]
-        //public async Task<IEnumerable<MineViewModel>> Mine()
-        //{
-        //    var logedInUser  = User?.Identity?.Name;
-        //    var userName = await userManager.FindByNameAsync(logedInUser);
-
-        //    return await data.Recipes
-        //       .Where(r => r.UserId == userName.Id.ToString())
-        //       .Where(r => r.IsActive == true)
-        //       .Select(r => new MineViewModel()
-        //       {
-        //           Id = r.Id,
-        //           Name = r.Name,
-        //           ImageUrl = r.ImageUrl,
-        //       })
-        //       .OrderByDescending(r => r.Id)
-        //       .ToListAsync();
-
-        //}
 
         // GET: RecipeController/Add
         [HttpGet]
@@ -110,10 +85,10 @@ namespace BabyFoodApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Add(AddViewModel model) //, string userId)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(model);
-            //}
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
             var logedInUser = User?.Identity?.Name;
             var userId = await userManager.FindByNameAsync(logedInUser);
@@ -168,27 +143,24 @@ namespace BabyFoodApp.Controllers
             }
         }
 
-        // GET: RecipeController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            var model = new DetailsRecipeViewModel();
-
-            return View(model);
-        }
 
         // POST: RecipeController/Delete/5
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> Delete(int recipeId)
         {
-            try
+            var recipe = await data.Recipes
+                .FindAsync(recipeId);
+
+            if(recipe == null)
             {
-                return RedirectToAction(nameof(All));
+                recipe.IsActive = false;
             }
-            catch
-            {
-                return View();
-            }
+
+
+            await data.SaveChangesAsync();
+            return RedirectToAction(nameof(All));
         }
 
 
