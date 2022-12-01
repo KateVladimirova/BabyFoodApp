@@ -42,82 +42,58 @@ namespace BabyFoodApp.Controllers
         }
 
         // POST: RecipeController/All
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> All(IFormCollection collection)
-        {
-            //var recipes = await data.Recipes
-            //    .AnyAsync(r => r.IsActive)
-
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View("All");
-            }
-        }
-
-        //// GET: RecipeController/MyRecipes
-        //[HttpGet]
-        //[Authorize]
-        //public IActionResult Mine()
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<AllRecipesViewModel> All()
         //{
-        //    List<Recipe> myRecipes = new List<Recipe>();
+        //    var recipes = await data.Recipes
+        //        .AnyAsync(r => r.IsActive);
 
-
-        //    myRecipes = data.Recipes
-        //       .Where(r => r.UserId == userId.Id)
-        //       .Where(r => r.IsActive == true)
-        //       .Select(r => new Recipe()
-        //       {
-        //           Name = r.Name,
-        //           ImageUrl = r.ImageUrl
-        //       })
-        //       .ToListAsync();
-
-        //    return View(myRecipes);
-
+        //   return View();
         //}
 
-        //POST: RecipeController/MyRecipes
+        //GET: RecipeController/MyRecipes
         [HttpGet]
         [Authorize]
-        public async Task<IEnumerable<MineViewModel>> Mine()
+        public async Task<ActionResult> Mine()
         {
-            var logedInUser  = User?.Identity?.Name;
-            var userName = await userManager.FindByNameAsync(logedInUser);
+            var logedInUser = User?.Identity?.Name;
+            var userName =  await userManager.FindByNameAsync(logedInUser);
 
-            return await data.Recipes
-               .Where(r => r.UserId == userName.Id.ToString())
-               .Where(r => r.IsActive == true)
+            var r =  await data.Recipes
+               .Where(r => r.UserId == userName.Id.ToString() 
+                      && r.IsActive == true)               
                .Select(r => new MineViewModel()
                {
-                   Id = r.Id,
                    Name = r.Name,
                    ImageUrl = r.ImageUrl,
                })
-               .OrderByDescending(r => r.Id)
                .ToListAsync();
 
-
-            //AllRecipesViewModel model = new AllRecipesViewModel();
-
-            //IEnumerable<Recipe> myRecipes = new List<Recipe>();
-
-            //var logedInUser = User?.Identity?.Name;
-            //var userId = await userManager.FindByNameAsync(logedInUser);
-
-            //myRecipes = await data.Recipes
-            //   .Where(r => r.UserId == userId.Id)
-            //   .Where(r => r.IsActive == true)
-            //   .OrderByDescending(r => r.Id)
-            //   .ToListAsync();
-
-
-            //return View(myRecipes);
+            return View(r);
         }
+
+        ////GET: RecipeController/MyRecipes
+        //[HttpGet]
+        //[Authorize]
+        //public async Task<IEnumerable<MineViewModel>> Mine()
+        //{
+        //    var logedInUser  = User?.Identity?.Name;
+        //    var userName = await userManager.FindByNameAsync(logedInUser);
+
+        //    return await data.Recipes
+        //       .Where(r => r.UserId == userName.Id.ToString())
+        //       .Where(r => r.IsActive == true)
+        //       .Select(r => new MineViewModel()
+        //       {
+        //           Id = r.Id,
+        //           Name = r.Name,
+        //           ImageUrl = r.ImageUrl,
+        //       })
+        //       .OrderByDescending(r => r.Id)
+        //       .ToListAsync();
+
+        //}
 
         // GET: RecipeController/Add
         [HttpGet]

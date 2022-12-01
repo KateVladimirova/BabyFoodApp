@@ -4,29 +4,34 @@
     ViewBag.Title = "My Recipes";
 }
 
-<h1>ViewBag.Title</h1>
+<h1 class="text-center">@ViewBag.Title</h1>
 
-@if (!Model.Any())
+@*@if (!Model.Any())
 {
     <h2 class="text-center">You have no recipes added for the moment!</h2>
-}
+}*@
 
-    @foreach (var recipe in Model)
-    {
+<table class="table">
+    <thead>
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => recipe.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => recipe.ImageUrl)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@recipe.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@recipe.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@recipe.Id">Delete</a>
-            </td>
+            <th scope="col">Name</th>
+            <th scope="col">Image</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var recipe in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => recipe.Name)</td>
+                <td><img style="width: auto; height: 100px" src="@Html.DisplayFor(modelItem => recipe.ImageUrl)"></td>
+                <button><a asp-action="Edit" asp-route-id="@recipe.Id">Edit</a></button> |
+                <button><a asp-action="Details" asp-route-id="@recipe.Id"> Details </a></button> |
+                <button><a asp-action="Delete" asp-route-id="@recipe.Id">Delete</a></button>
+            </tr>
+        }
+    </tbody>
+</table>
+
 
 
 @*<table class="table">
