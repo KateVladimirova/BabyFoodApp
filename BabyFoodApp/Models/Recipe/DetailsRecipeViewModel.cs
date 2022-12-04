@@ -6,7 +6,6 @@ namespace BabyFoodApp.Models.Recipe
 {
     public class DetailsRecipeViewModel
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -30,5 +29,7 @@ namespace BabyFoodApp.Models.Recipe
 
         [Required]
         public string ImageUrl { get; set; } = null!;
+
+        public bool IsActive { get; set; } 
     }
 }

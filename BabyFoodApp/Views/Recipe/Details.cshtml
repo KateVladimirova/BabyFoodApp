@@ -11,11 +11,17 @@
    @* <h4>DetailsRecipeViewModel</h4>*@
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class = "col-sm-2" >
             @Html.DisplayNameFor(model => model.Name)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2" >
+            @Html.DisplayNameFor(model => model.ImageUrl)
+        </dt>
+        <dd class="col-sm-10">
+            <img style="width: auto; height: 100px" src="@Html.DisplayFor(model => model.ImageUrl)" />
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
@@ -40,10 +46,14 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.TotalTime)
-        </dd>
+        </dd>        
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    @*<a asp-action="Delete" asp-route-id="@Model?.Id" method = "post">Delete</a>*@ |
+    <form asp-action="Delete" asp-route-id="@Model?.Id" method="post>
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
     <a asp-action="Index">Back to List</a>
 </div>

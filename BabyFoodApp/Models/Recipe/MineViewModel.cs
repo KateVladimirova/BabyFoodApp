@@ -5,7 +5,6 @@ namespace BabyFoodApp.Models.Recipe
 {
     public class MineViewModel
     {
-        [Key]
         public int Id { get; set; }
 
         [Required]

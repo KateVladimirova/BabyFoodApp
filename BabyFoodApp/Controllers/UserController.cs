@@ -82,12 +82,15 @@ namespace BabyFoodApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Login()
         {
-            //if (User?.Identity?.IsAuthenticated ?? false)
-            //{
-            //    return RedirectToAction("Index", "Home");
-            //}
+            if (User?.Identity?.IsAuthenticated ?? false)
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            //model.ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+           // model.ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList
+
+
+           // var result = new LoginViewModel();
 
             return View();
         }
