@@ -1,13 +1,15 @@
-﻿@model DetailsRecipeViewModel
+﻿@using BabyFoodApp.Data.Enums
+
+@model DetailsRecipeViewModel
 
 @{
     ViewBag.Title = "Edit";
 }
 
-<h1>@ViewBag.Title</h1>
+<h1 class="text-center">@ViewBag.Title</h1>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+      <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
         <form asp-controller="recipe" asp-action="edit" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
@@ -15,17 +17,6 @@
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-                <img style="width: auto; height: 100px" src="@Html.DisplayFor(model => model.ImageUrl)" />
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CookingTime" class="control-label"></label>
@@ -42,14 +33,34 @@
                 <input asp-for="TotalTime" class="form-control" />
                 <span asp-validation-for="TotalTime" class="text-danger"></span>
             </div>
+            <div class="form-floating">
+                @Html.DropDownListFor(m => m.ChildAge, new SelectList(Enum.GetValues(typeof(Age))),"Select Age")
+
+            </div>
+            <div class="form-floating">
+                @Html.DropDownListFor(m => m.Category, new SelectList(Enum.GetValues(typeof(Category))),"Select Category")
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageUrl" class="control-label"></label>
+                <input asp-for="ImageUrl" class="form-control" />
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                <img style="width: auto; height: 100px" src="@Html.DisplayFor(model => model.ImageUrl)" />
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.Description"></label>
+                <textarea asp-for="@Model.Description" class="form-control" aria-required="true"></textarea>                
+                <span asp-validation-for="@Model.Description" class="text-danger"></span>
+            </div>
+
             <button type="submit" class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id"><a>Save</a></button>
+
+            <div>
+                <a asp-action="Index" class="btn btn-primary">Back</a>
+            </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index" class="btn btn-primary">Back</a>
-</div>
 
 @section Scripts {
     @{

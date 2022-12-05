@@ -6,13 +6,14 @@
     ViewBag.Title = "Add New Recipe";
 }
 
-<h1>@ViewBag.Title </h1>
+<h1 class="text-center">@ViewBag.Title</h1>
+
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
         <form asp-controller="recipe" asp-action="add" method="post">
             <div class="form-floating">
-                <input asp-for="@Model.Name" class="form-control" aria-required="true" />
+                <input asp-for="@Model.Name" class="form-control" aria-required="true" placeholder="Name" />
                 <label asp-for="@Model.Name"></label>
                 <span asp-validation-for="@Model.Name" class="text-danger"></span>
             </div> 
@@ -31,11 +32,11 @@
                 <label asp-for="@Model.TotalTime"></label>
                 <span asp-validation-for="@Model.TotalTime" class="text-danger"></span>
             </div>
-            <div class="form-group">   
+            <div class="form-floating">
                 @Html.DropDownListFor(m => m.ChildAge, new SelectList(Enum.GetValues(typeof(Age))),"Select Age")
                 
             </div>
-            <div class="form-group">
+            <div class="form-floating">
                 @Html.DropDownListFor(m => m.Category, new SelectList(Enum.GetValues(typeof(Category))),"Select Category")
             </div>
             <div class="form-floating">
@@ -43,11 +44,13 @@
                 <label asp-for="@Model.ImageUrl"></label>
                 <span asp-validation-for="@Model.ImageUrl" class="text-danger"></span>
             </div>
+
             <div class="form-floating">
-                <input asp-for="@Model.Description" class="form-control" aria-required="true" />
+                <textarea asp-for="@Model.Description" class="form-control" aria-required="true"></textarea>
                 <label asp-for="@Model.Description"></label>
                 <span asp-validation-for="@Model.Description" class="text-danger"></span>
-            </div> 
+            </div>
+
             
             <button type="submit" class="w-100 btn btn-lg btn-primary">Add</button>
         </form>

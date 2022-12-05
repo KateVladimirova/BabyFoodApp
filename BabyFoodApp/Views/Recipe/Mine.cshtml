@@ -6,28 +6,18 @@
 
 <h1 class="text-center">@ViewBag.Title</h1>
 
-@if(Model.Count == 0)
+@if (Model.Count == 0)
 {
     <h2 class="text-center">You have no recipes added for the moment!</h2>
 
-    <button type="button" class="w-100 btn btn-lg btn-primary"><a asp-action="Add" asp-controller="Recipe">Add New Recipe</a></button>
+    <button type="button" class="w-100 btn btn-lg btn-primary"><a asp-controller="Recipe" asp-action="Add">Add New Recipe</a></button>
 }
 
-<table class="table">
-   
-    <tbody>
-        @foreach (var recipe in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => recipe.Name)</td>
-                <td><img style="width: auto; height: 100px" src="@Html.DisplayFor(modelItem => recipe.ImageUrl)"></td>
-            </tr>
-
-            <button><a asp-action="Details" asp-route-id="@recipe.Id">Details</a></button>
-        }
-    </tbody>
-</table>
-
+@foreach (var item in Model)
+{
+    <a asp-action="Details" asp-controller="Recipe" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+    <a asp-action="Details" asp-controller="Recipe" asp-route-id="@item.Id"><img style="width: auto; height: 100px" src="@Html.DisplayFor(modelItem => item.ImageUrl)"></a>
+}
 
 
 @*<table class="table">

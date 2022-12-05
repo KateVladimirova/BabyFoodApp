@@ -31,6 +31,15 @@ namespace BabyFoodApp.Models.Recipe
         public int TotalTime { get; set; }
 
         [Required]
+        [Display(Name = "Child Age")]
+        public Age ChildAge { get; set; }
+
+        [Required]
+        public Category Category { get; set; }
+
+
+        [Required]
+        [Display(Name = "Image URL")]
         public string ImageUrl { get; set; } = null!;
 
         public bool IsActive { get; set; } 
