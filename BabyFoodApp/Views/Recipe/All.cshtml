@@ -12,7 +12,7 @@
 }
 
 
-<table class="table">
+<div class="table">
 @foreach (var recipe in @Model)
 {
     <tr>
@@ -20,4 +20,4 @@
          <td><img style="width: auto; height: 100px" src="@Html.DisplayFor(modelItem => recipe.ImageUrl)"></td>
     </tr>
 }
-</table>
+</div>

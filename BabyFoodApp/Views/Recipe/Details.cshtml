@@ -50,10 +50,9 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    @*<a asp-action="Delete" asp-route-id="@Model?.Id" method = "post">Delete</a>*@ |
-    <form asp-action="Delete" asp-route-id="@Model?.Id" method="post>
-        <button type="submit" class="btn btn-danger">Delete</button>
+    <button class="btn btn-warning"><a asp-action="Edit" asp-route-id="@Model.Id">Edit</a></button>   
+    <button class="btn btn-success"><a asp-action="Mine">Back</a></button>
+    <form asp-controller="recipe" asp-action="Delete" asp-route-id="@Model.Id" method="post">
+        <button type="submit" class="btn btn-danger" value="delete">Delete</button>
     </form>
-    <a asp-action="Index">Back to List</a>
 </div>

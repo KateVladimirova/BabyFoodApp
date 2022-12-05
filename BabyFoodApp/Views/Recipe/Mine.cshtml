@@ -6,19 +6,15 @@
 
 <h1 class="text-center">@ViewBag.Title</h1>
 
-@*@if (!Model.Any())
+@if(Model.Count == 0)
 {
     <h2 class="text-center">You have no recipes added for the moment!</h2>
-}*@
 
-<div>@Model.Count()</div>
+    <button type="button" class="w-100 btn btn-lg btn-primary"><a asp-action="Add" asp-controller="Recipe">Add New Recipe</a></button>
+}
+
 <table class="table">
-    @*<thead>
-        <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Image</th>
-        </tr>
-    </thead>*@
+   
     <tbody>
         @foreach (var recipe in Model)
         {

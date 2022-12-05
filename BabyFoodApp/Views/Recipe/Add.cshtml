@@ -31,8 +31,9 @@
                 <label asp-for="@Model.TotalTime"></label>
                 <span asp-validation-for="@Model.TotalTime" class="text-danger"></span>
             </div>
-            <div class="form-group">               
-                @Html.DropDownListFor(m => m.ChildAge, new SelectList(Enum.GetValues(typeof(Age))),"Select Age")                
+            <div class="form-group">   
+                @Html.DropDownListFor(m => m.ChildAge, new SelectList(Enum.GetValues(typeof(Age))),"Select Age")
+                
             </div>
             <div class="form-group">
                 @Html.DropDownListFor(m => m.Category, new SelectList(Enum.GetValues(typeof(Category))),"Select Category")

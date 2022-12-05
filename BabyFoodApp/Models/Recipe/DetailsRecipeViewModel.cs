@@ -19,12 +19,15 @@ namespace BabyFoodApp.Models.Recipe
         public string Description { get; set; } = null!;
 
         [Required]
+        [Display(Name = "Cooking Time")]
         public int CookingTime { get; set; }
 
         [Required]
+        [Display(Name = "Preparation Time")]
         public int PreparationTime { get; set; }
 
         [Required]
+        [Display(Name = "Total Time")]
         public int TotalTime { get; set; }
 
         [Required]

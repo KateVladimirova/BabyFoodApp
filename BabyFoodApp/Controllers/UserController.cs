@@ -79,20 +79,20 @@ namespace BabyFoodApp.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public IActionResult Login()
         {
-            if (User?.Identity?.IsAuthenticated ?? false)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            var model = new LoginViewModel();
 
-           // model.ExternalLogins = (await signInManager.GetExternalAuthenticationSchemesAsync()).ToList
+            return View(model);
 
+            //var result = new LoginViewModel();
 
-           // var result = new LoginViewModel();
+            //if (User.Identity.IsAuthenticated == false)
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}           
 
-            return View();
+            //return View(result);
         }
 
         [HttpPost]

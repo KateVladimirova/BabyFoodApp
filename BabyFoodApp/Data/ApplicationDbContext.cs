@@ -15,6 +15,6 @@ namespace BabyFoodApp.Data
 
         public DbSet<Recipe> Recipes { get; set; } = null!;
 
-        public DbSet<BabyFoodApp.Models.Recipe.MineViewModel> MineViewModel { get; set; }
+        public DbSet<MineViewModel> MineViewModel { get; set; }
     }
 }

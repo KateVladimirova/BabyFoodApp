@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 using System.Security.Claims;
 
 namespace BabyFoodApp.Controllers
@@ -34,7 +35,7 @@ namespace BabyFoodApp.Controllers
         }
 
         //POST: RecipeController/All
-        [HttpGet]        
+        [HttpGet]
         public async Task<ActionResult> All()
         {
             var recipes = await data.Recipes
@@ -62,7 +63,7 @@ namespace BabyFoodApp.Controllers
                       && r.IsActive == true)
                .Select(r => new MineViewModel()
                {
-                   Id= r.Id,
+                   Id = r.Id,
                    Name = r.Name,
                    ImageUrl = r.ImageUrl,
                })
@@ -105,7 +106,8 @@ namespace BabyFoodApp.Controllers
                 Category = model.Category,
                 ImageUrl = model.ImageUrl,
                 Description = model.Description,
-                UserId = userId.Id
+                UserId = userId.Id,
+                IsActive = true
             };
 
             await data.AddAsync(recipe);
@@ -114,16 +116,89 @@ namespace BabyFoodApp.Controllers
             return RedirectToAction("Mine", "Recipe");
             //return RedirectToAction("Details", recipe.Id); //To see how to find the recipe
         }
+            
+              
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult Details(int id)
+        {
+            var recipe = data.Recipes
+                .FirstOrDefault(r => r.Id == id && r.IsActive == true);
 
-      
-        // POST: RecipeController/Delete/5
-        //[Authorize]
+            var recipeDetails = new DetailsRecipeViewModel();
+
+            if (recipe != null)
+            {
+                recipeDetails = new DetailsRecipeViewModel()
+                {
+                    Id = recipe.Id,
+                    Name = recipe.Name,
+                    Description = recipe.Description,
+                    CookingTime = recipe.CookingTime,
+                    PreparationTime = recipe.PreparationTime,
+                    TotalTime = recipe.TotalTime,
+                    ImageUrl = recipe.ImageUrl
+                };
+            }
+            return View(recipeDetails);
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult Edit(int id)
+        {
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+
+            var recipe = data.Recipes.Where(r => r.Id == id).FirstOrDefault();
+
+            var recipeToEdit = new DetailsRecipeViewModel()
+            {
+                Id = recipe.Id,
+                Name = recipe.Name,
+                Description = recipe.Description,
+                CookingTime = recipe.CookingTime,
+                PreparationTime = recipe.PreparationTime,
+                TotalTime = recipe.TotalTime,
+                ImageUrl = recipe.ImageUrl
+            };
+
+            return View(recipeToEdit);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(int id, DetailsRecipeViewModel model)
+        {
+            var recipe = await data.Recipes.FindAsync(id);
+
+
+            if (recipe != null)
+            {
+                recipe.Name = model.Name;
+                recipe.Description = model.Description;
+                recipe.CookingTime = model.CookingTime;
+                recipe.PreparationTime = model.PreparationTime;
+                recipe.TotalTime = model.TotalTime;
+                recipe.ImageUrl = model.ImageUrl;
+
+                await data.SaveChangesAsync();
+            };
+
+            return RedirectToAction(nameof(Details), new { id = id});
+
+        }
+
+        
         //[HttpPost]
+        //[Authorize]
         //public async Task<IActionResult> Delete(int recipeId)
         //{
         //    var recipe = await data.Recipes
         //        .FindAsync(recipeId);
-            
+
 
         //    if(recipe != null && recipe.IsActive == true)
         //    {
@@ -145,70 +220,20 @@ namespace BabyFoodApp.Controllers
         //}
 
         [HttpPost]
-        public IActionResult Delete(DetailsRecipeViewModel model)
+        public IActionResult Delete(int id, DetailsRecipeViewModel model)
         {
-            var r = data.Recipes
-                .FirstOrDefault(r => r.Id == model.Id);
+            var r = data.Recipes.Find(id);
 
-            if(r == null)
+            if (r == null)
             {
                 return NotFound();
             }
 
-            r.IsActive= false;
+            r.IsActive = false;
             data.SaveChanges();
 
             return RedirectToAction(nameof(Mine));
         }
-
-
-        // GET: RecipeController/Details/5
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult Details(int id)
-        {
-            var recipe = data.Recipes
-                .FirstOrDefault(r => r.Id == id && r.IsActive == true);
-
-            var recipeDetails = new DetailsRecipeViewModel();
-
-            if (recipe != null)
-            {
-                 recipeDetails = new DetailsRecipeViewModel()
-                {
-                    Id = recipe.Id,
-                    Name = recipe.Name,
-                    Description = recipe.Description,
-                    CookingTime = recipe.CookingTime,
-                    PreparationTime = recipe.PreparationTime,
-                    TotalTime = recipe.TotalTime,
-                    ImageUrl = recipe.ImageUrl
-                };
-            }
-            return View(recipeDetails);
-        }
-
-        // GET: RecipeController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: RecipeController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, DetailsRecipeViewModel model) //new DTO for this method?
-        {
-            try
-            {
-                return RedirectToAction(nameof(Details), new { id = 1 });
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
 
 
 
