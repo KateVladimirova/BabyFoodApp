@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace BabyFoodApp.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<User> //<User> in the Workshop files
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -15,6 +15,8 @@ namespace BabyFoodApp.Data
 
         public DbSet<Recipe> Recipes { get; set; } = null!;
 
-        public DbSet<MineViewModel> MineViewModel { get; set; }
+        //public DbSet<Ingredient> Ingredients { get; set; }
+
+        //public DbSet<RecipeParts> RecipeParts { get; set; } = null!;
     }
 }

@@ -7,5 +7,6 @@ namespace BabyFoodApp.Data.IdentityModels
     {
         public override bool EmailConfirmed { get; set; } = false;
         public ICollection<Recipe> Recipes { get; set; } = new List<Recipe>();
+
     }
 }

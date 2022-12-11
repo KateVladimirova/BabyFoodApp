@@ -11,8 +11,20 @@
     <h2 class="text-center">You have no recipes added for the moment!</h2>
 }
 
-
-<div class="table">
+<div class="col-4md-4">
+    <div class="card mb-3">
+        @foreach (var recipe in @Model)
+        {
+            <div class="card-body text-center">
+                    <img class="card-img-center" style="widht: auto; height: 100px" src="@Html.DisplayFor(modelItem => recipe.ImageUrl)">
+                    
+                        <h4>@Html.DisplayFor(modelItem => recipe.Name)</h4>
+                              
+            </div>
+        }
+    </div>
+</div>
+@*<div class="table">
 @foreach (var recipe in @Model)
 {
     <tr>
@@ -20,4 +32,4 @@
          <td><img style="width: auto; height: 100px" src="@Html.DisplayFor(modelItem => recipe.ImageUrl)"></td>
     </tr>
 }
-</div>
+</div>*@

@@ -1,5 +1,8 @@
+using BabyFoodApp.Contracts;
 using BabyFoodApp.Data;
+using BabyFoodApp.Data.Common;
 using BabyFoodApp.Data.IdentityModels;
+using BabyFoodApp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,12 +18,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString), ServiceLifetime.Transient);
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 builder.Services.AddControllersWithViews();
 
-//builder.Services.AddTransient<IRecipeService, RecipeService>();
+builder.Services.AddTransient<IRecipeService, RecipeService>();
+
+builder.Services.AddTransient<IRepository, Repository>();
 
 
 var app = builder.Build();
@@ -54,6 +60,9 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "recipe",
     pattern: "{controller=Recipe}/{action}/{id?}");
+app.MapControllerRoute(
+    name: "administrator",
+    pattern: "{controller=administrator}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 app.Run();

@@ -45,12 +45,13 @@ namespace BabyFoodApp.Data.IdentityModels
         public string UserId { get; set; } = null!;
 
         [Required]
-        //[ForeignKey(nameof(UserId))]
-        public IdentityUser User { get; set; } = null!;
+        [ForeignKey(nameof(UserId))]
+        public User User { get; set; } = null!;
 
         [Required]
         public bool IsActive { get; set; } = true;
 
+        //public ICollection<RecipeParts> RecipeParts { get; set; } = new List<RecipeParts>();
     }
 
 }

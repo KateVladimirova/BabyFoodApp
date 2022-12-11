@@ -12,10 +12,14 @@
 
         //User
 
-        public const int EmailMaxLenght = 320;
-        public const int EmailMinLenght = 3;
+        public const int UserEmailMaxLenght = 320;
+        public const int UserEmailMinLenght = 4;
 
-        public const int PasswordMaxLenght = 20;
-        public const int PasswordMinLenght = 8;
+        public const int UserPasswordMaxLenght = 20;
+        public const int UserPasswordMinLenght = 8;
+
+        //AdminConstants
+        public const string AdminRoleName = "Administrator";
+        public const string AdminEmail = "admin@babyfood.com";
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BabyFoodApp.Data;
+using BabyFoodApp.Data.IdentityModels;
 using BabyFoodApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -9,15 +10,15 @@ namespace BabyFoodApp.Controllers
 {
     public class UserController : Controller
     {
-        private readonly UserManager<IdentityUser> userManager;
+        private readonly UserManager<User> userManager;
 
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly SignInManager<User> signInManager;
 
         public readonly ApplicationDbContext data;
 
         public UserController(
-            UserManager<IdentityUser> _userManager,
-            SignInManager<IdentityUser> _signInManager,
+            UserManager<User> _userManager,
+            SignInManager<User> _signInManager,
             ApplicationDbContext _data)
         {
             userManager = _userManager;
@@ -52,7 +53,7 @@ namespace BabyFoodApp.Controllers
                 return View(model);
             }
 
-            IdentityUser user = new IdentityUser
+            var user = new User
             { 
                 UserName = model.Email,
                 Email = model.Email
