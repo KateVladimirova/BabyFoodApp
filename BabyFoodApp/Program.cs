@@ -1,4 +1,8 @@
+using BabyFoodApp.Contracts;
 using BabyFoodApp.Data;
+using BabyFoodApp.Data.Common;
+using BabyFoodApp.Data.IdentityModels;
+using BabyFoodApp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,13 +10,23 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.SignIn.RequireConfirmedEmail = false;
+});
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlServer(connectionString), ServiceLifetime.Transient);
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddTransient<IRecipeService, RecipeService>();
+
+builder.Services.AddTransient<IRepository, Repository>();
 
 
 var app = builder.Build();
@@ -38,8 +52,17 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
+    name: "home",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "user",
+    pattern: "{controller=User}/{action}/{id?}");
+app.MapControllerRoute(
+    name: "recipe",
+    pattern: "{controller=Recipe}/{action}/{id?}");
+app.MapControllerRoute(
+    name: "administrator",
+    pattern: "{controller=administrator}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 app.Run();
