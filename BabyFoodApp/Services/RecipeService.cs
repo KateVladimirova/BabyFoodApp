@@ -4,10 +4,11 @@ using BabyFoodApp.Models.Recipe;
 using BabyFoodApp.Data.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BabyFoodApp.Services
 {
-    public class RecipeService :IRecipeService
+    public class RecipeService : IRecipeService
     {
         private readonly IRepository data;
 
@@ -43,6 +44,7 @@ namespace BabyFoodApp.Services
                 ImageUrl = model.ImageUrl,
                 Description = model.Description,
                 UserId = userId,
+                Ingredients = model.Ingredients,
                 IsActive = true
             };
 
@@ -64,9 +66,6 @@ namespace BabyFoodApp.Services
         {
             var recipe = await data.GetByIdAsync<Recipe>(id);
 
-
-            if (recipe != null)
-            {
                 recipe.Name = model.Name;
                 recipe.Description = model.Description;
                 recipe.CookingTime = model.CookingTime;
@@ -74,13 +73,15 @@ namespace BabyFoodApp.Services
                 recipe.TotalTime = model.TotalTime;
                 recipe.ImageUrl = model.ImageUrl;
 
-                await data.SaveChangesAsync();
-            };
+                await data.SaveChangesAsync();            
         }
 
         public async Task<DetailsRecipeViewModel> DetailsRecipeById(int id)
-        {            
-            return await data.AllReadonly<Recipe>()
+        {
+            var recipe = new DetailsRecipeViewModel();
+
+
+            recipe = await data.AllReadonly<Recipe>()
                 .Where(r => r.IsActive == true && r.Id == id)
                 .Select(r => new DetailsRecipeViewModel()
                 {
@@ -90,9 +91,12 @@ namespace BabyFoodApp.Services
                     CookingTime = r.CookingTime,
                     PreparationTime = r.PreparationTime,
                     TotalTime = r.TotalTime,
+                    Ingredients = r.Ingredients,
                     ImageUrl = r.ImageUrl
                 })
                 .FirstAsync();
+
+            return recipe;
         }
         public async Task<bool> Exists(int id)
         {

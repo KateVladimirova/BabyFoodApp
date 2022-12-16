@@ -42,6 +42,10 @@ namespace BabyFoodApp.Models.Recipe
         [Display(Name = "Image URL")]
         public string ImageUrl { get; set; } = null!;
 
-        public bool IsActive { get; set; } 
+        public bool IsActive { get; set; } = true;
+
+        
+        [Display(Name = "Ingredients")]
+        public string Ingredients { get; set; }
     }
 }

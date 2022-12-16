@@ -2,6 +2,7 @@ using BabyFoodApp.Contracts;
 using BabyFoodApp.Data;
 using BabyFoodApp.Data.Common;
 using BabyFoodApp.Data.IdentityModels;
+using BabyFoodApp.Extensions;
 using BabyFoodApp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -51,6 +52,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.SeedAdministrator();
+
 app.MapControllerRoute(
     name: "home",
     pattern: "{controller=Home}/{action=Index}/{id?}");
@@ -63,6 +66,9 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "administrator",
     pattern: "{controller=administrator}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "role",
+    pattern: "{controller=role}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 app.Run();

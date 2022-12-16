@@ -12,11 +12,11 @@ namespace BabyFoodApp.Controllers
     public class AdministratorController : Controller
     {
         public readonly ApplicationDbContext data;
-        public readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
+        public readonly UserManager<User> userManager;
+        private readonly SignInManager<User> signInManager;
         public AdministratorController(ApplicationDbContext _data,
-            UserManager<IdentityUser> _userManager,
-            SignInManager<IdentityUser> _signInManager)
+            UserManager<User> _userManager,
+            SignInManager<User> _signInManager)
         {
             data = _data;
             userManager = _userManager;
@@ -26,20 +26,25 @@ namespace BabyFoodApp.Controllers
         //public string Index() =>
         //"Administrator";
 
-        [HttpGet]
-        public async Task<ActionResult> GetAllRecipesById()
+        public IActionResult Index()
         {
-            var recipes = await data.Recipes
-               .Where(r => r.IsActive)
-                .Select(r => new AllRecipesViewModel()
-                {
-                    Name = r.Name,
-                    ImageUrl = r.ImageUrl,
-                })
-              .ToListAsync();
-
-            return View(recipes);
+            return View();
         }
+
+        //[HttpGet]
+        //public async Task<ActionResult> GetAllRecipesById()
+        //{
+        //    var recipes = await data.Recipes
+        //       .Where(r => r.IsActive)
+        //        .Select(r => new AllRecipesViewModel()
+        //        {
+        //            Name = r.Name,
+        //            ImageUrl = r.ImageUrl,
+        //        })
+        //      .ToListAsync();
+
+        //    return View(recipes);
+        //}
 
         //[HttpGet]
         //public async Task<ActionResult> GetAllUsersById()
@@ -55,5 +60,5 @@ namespace BabyFoodApp.Controllers
         //    return View(recipes);
         //}
 
-    } 
+    }
 }

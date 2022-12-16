@@ -41,5 +41,8 @@ namespace BabyFoodApp.Models.Recipe
             MinimumLength = Constants.RecipeDescriptionMinLenght)]
         public string Description { get; set; } = null!;
 
+        
+        public string Ingredients { get; set; }
+
     }
 }
