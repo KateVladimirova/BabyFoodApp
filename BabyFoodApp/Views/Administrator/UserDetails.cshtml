@@ -1,0 +1,66 @@
+﻿@model UserDetailsModel
+
+@{
+    ViewBag.Title = "User Details";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<span>Username : @Model.Email</span>
+<br />
+<span>User Id : @Model.Id</span>
+<br />
+<span>Total count of recipes: @Model.UserRecipes.Count</span>
+<br />
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <td>Id</td>
+            <td>Image</td>
+            <td>Title</td>
+            <td>Status</td>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var data in Model.UserRecipes)
+        {
+            <tr>
+                <td>@data.Id</td>
+                <td><img src="@data.ImageUrl" style="height: 100px; width: auto; obect-fit: cover;"></td>
+                <td>@data.Name</td>
+                <td>
+                    <select id="productextra">
+                    <option selected value="0">@data.IsActive</option>
+                    @if(data.IsActive == true){
+                    <option value="1">False</option> 
+                    } else if(data.IsActive == false){
+                        <option value="1">True</option>
+                    }
+                    </select>
+                    <button type="button" id="product-addtocart-button1" class="button btn-cart select-change" disabled="disabled">
+                        <span><span>Change Status</span></span>
+                    </button>
+                </td>
+             </tr>
+        }
+    </tbody>
+</table>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+@*
+<button type="button" id="product-addtocart-button" class="button btn-cart" disabled="disabled">
+    <span><span>Bulk Order</span></span>
+</button>
+<button type="button" id="product-addtocart-button1" class="button btn-cart select-change" disabled="disabled">
+    <span><span>Sample Order</span></span>
+</button>*@
+<script type="application/json">
+$("select").on('change', function() {
+
+  If($(this).Find('option').text()=="1"){
+      $("#product-addtocart-button1").attr('disabled', false)
+  }
+});
+</script>

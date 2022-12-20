@@ -2,15 +2,11 @@
 using BabyFoodApp.Data;
 using BabyFoodApp.Data.Enums;
 using BabyFoodApp.Data.IdentityModels;
-using BabyFoodApp.Models;
 using BabyFoodApp.Models.Recipe;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using System.Net;
-using System.Security.Claims;
 
 namespace BabyFoodApp.Controllers
 {
@@ -101,6 +97,7 @@ namespace BabyFoodApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
+
             if (await recipeService.Exists(id) == false)
             {
                 return RedirectToAction(nameof(All));
@@ -111,40 +108,57 @@ namespace BabyFoodApp.Controllers
             return View(recipeDetails);
         }
 
-        //[HttpGet]
-        //[Authorize]
-        //public ActionResult Edit(int id)
-        //{
-        ////    if (id == null)
-        ////    {
-        ////        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        ////    }
+        [HttpGet]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var recipe = await data.Recipes
+                .FindAsync(id);
 
-        //    var recipe = data.Recipes.Where(r => r.Id == id).FirstOrDefault();
+            var model = new DetailsRecipeViewModel
+            {
+                Id = recipe.Id,
+                Name = recipe.Name,
+                Description = recipe.Description,
+                CookingTime = recipe.CookingTime,
+                PreparationTime = recipe.PreparationTime,
+                TotalTime = recipe.TotalTime,
+                ImageUrl = recipe.ImageUrl,
+                ChildAge = recipe.ChildAge,
+                Category = recipe.Category
+            };
 
-        //    var recipeToEdit = new DetailsRecipeViewModel()
-        //    {
-        //        Id = recipe.Id,
-        //        Name = recipe.Name,
-        //        Description = recipe.Description,
-        //        CookingTime = recipe.CookingTime,
-        //        PreparationTime = recipe.PreparationTime,
-        //        TotalTime = recipe.TotalTime,
-        //        ImageUrl = recipe.ImageUrl
-        //    };
+            return View(model);
 
-        //    return View(recipeToEdit);
-        //}
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> Edit(int id, DetailsRecipeViewModel model)
+        {
+            if (await recipeService.Exists(id) == null)
+            {
+                return RedirectToAction(nameof(Mine));
+            }
+
+
+            await recipeService.Edit(model.Id, model);
+
+            return RedirectToAction(nameof(Details), new { model.Id });
+
+            //return View(recipe);
+        }
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Edit(int id, DetailsRecipeViewModel model)
+
+        //public async Task<IActionResult> Edit(int id, DetailsRecipeViewModel model)
         //{
         //    var recipe = await data.Recipes.FindAsync(id);
 
 
         //    if (recipe != null)
         //    {
+        //        recipe.Id = model.Id;
         //        recipe.Name = model.Name;
         //        recipe.Description = model.Description;
         //        recipe.CookingTime = model.CookingTime;
@@ -155,53 +169,46 @@ namespace BabyFoodApp.Controllers
         //        await data.SaveChangesAsync();
         //    };
 
-        //    return RedirectToAction(nameof(Details), new { id = id});
+        //    return RedirectToAction(nameof(Details), new {model.Id});
 
         //}
 
 
-        ////[HttpPost]
-        ////[Authorize]
-        ////public async Task<IActionResult> Delete(int recipeId)
-        ////{
-        ////    var recipe = await data.Recipes
-        ////        .FindAsync(recipeId);
-
-
-        ////    if(recipe != null && recipe.IsActive == true)
-        ////    {
-        ////        data.Recipes.Remove(recipe);
-
-        ////        //recipe.IsActive = false;
-
-        ////        await data.SaveChangesAsync();
-
-
-        ////        return RedirectToAction(nameof(Mine));
-        ////    }
-        ////    else
-        ////    {
-        ////        return NotFound();
-        ////    }
-
-        ////    return RedirectToAction(nameof(Mine));
-        ////}
-
         //[HttpPost]
-        //public IActionResult Delete(int id, DetailsRecipeViewModel model)
+        //[Authorize]
+        //public async Task<IActionResult> Delete(int recipeId)
         //{
-        //    var r = data.Recipes.Find(id);
+        //    var recipe = await data.Recipes
+        //        .FindAsync(recipeId);
 
-        //    if (r == null)
+
+        //    if (recipe != null && recipe.IsActive == true)
+        //    {
+        //        data.Recipes.Remove(recipe);
+
+        //        //recipe.IsActive = false;
+
+        //        await data.SaveChangesAsync();
+
+
+        //        return RedirectToAction(nameof(Mine));
+        //    }
+        //    else
         //    {
         //        return NotFound();
         //    }
 
-        //    r.IsActive = false;
-        //    data.SaveChanges();
-
         //    return RedirectToAction(nameof(Mine));
         //}
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+
+            recipeService.Delete(id);
+
+            return RedirectToAction(nameof(Mine));
+        }
 
 
 

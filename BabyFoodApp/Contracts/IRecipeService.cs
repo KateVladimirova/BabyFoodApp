@@ -7,7 +7,7 @@ namespace BabyFoodApp.Contracts
     {
         Task<IEnumerable<AllRecipesViewModel>> All();
         Task<int> Create(AddViewModel model, string userId);
-        Task Delete(int recipeId);
+        void Delete(int recipeId);
         Task Edit(int id, DetailsRecipeViewModel model);
         Task<bool> Exists(int id);
 

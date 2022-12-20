@@ -51,7 +51,11 @@ namespace BabyFoodApp.Data.IdentityModels
         [Required]
         public bool IsActive { get; set; } = true;
 
-        //public ICollection<RecipeParts> RecipeParts { get; set; } = new List<RecipeParts>();
+        [Required]
+        public string Ingredients { get; set; } = null!;
+
+        //[Required]
+        //public ICollection<string> Ingredients { get; set; } = new List<string>();
     }
 
 }
