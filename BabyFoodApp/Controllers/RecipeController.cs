@@ -150,7 +150,7 @@ namespace BabyFoodApp.Controllers
 
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        
+
         //public async Task<IActionResult> Edit(int id, DetailsRecipeViewModel model)
         //{
         //    var recipe = await data.Recipes.FindAsync(id);
@@ -201,21 +201,14 @@ namespace BabyFoodApp.Controllers
         //    return RedirectToAction(nameof(Mine));
         //}
 
-        //[HttpPost]
-        //public IActionResult Delete(int id, DetailsRecipeViewModel model)
-        //{
-        //    var r = data.Recipes.Find(id);
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
 
-        //    if (r == null)
-        //    {
-        //        return NotFound();
-        //    }
+            recipeService.Delete(id);
 
-        //    r.IsActive = false;
-        //    data.SaveChanges();
-
-        //    return RedirectToAction(nameof(Mine));
-        //}
+            return RedirectToAction(nameof(Mine));
+        }
 
 
 

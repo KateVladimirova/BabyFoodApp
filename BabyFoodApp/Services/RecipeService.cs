@@ -5,14 +5,15 @@ using BabyFoodApp.Data.Common;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using BabyFoodApp.Data;
 
 namespace BabyFoodApp.Services
 {
     public class RecipeService : IRecipeService
     {
-        private readonly IRepository data;
+        private readonly ApplicationDbContext data;
 
-        public RecipeService(IRepository _data)
+        public RecipeService(ApplicationDbContext _data)
         {
             this.data = _data;
         }
@@ -21,7 +22,7 @@ namespace BabyFoodApp.Services
 
         public async Task<IEnumerable<AllRecipesViewModel>> All()
         {
-            return await data.AllReadonly<Recipe>()
+            return await data.Recipes
                 .Where(r => r.IsActive)
                  .Select(r => new AllRecipesViewModel()
                  {
@@ -54,17 +55,20 @@ namespace BabyFoodApp.Services
             return recipe.Id;
         }
 
-        public async Task Delete(int recipeId)
+        public void  Delete(int recipeId)
         {
-            var recipe = await data.GetByIdAsync<Recipe>(recipeId);
-            recipe.IsActive = false;
-
-            await data.SaveChangesAsync();
+            var recipe =  data.Recipes.FirstOrDefault(r => r.Id == recipeId);
+            
+            if(recipe != null)
+            {
+                recipe.IsActive = false;
+                data.SaveChanges();
+            }            
         }
 
         public async Task Edit(int id, DetailsRecipeViewModel model)
         {
-            var recipe = await data.GetByIdAsync<Recipe>(id);
+            var recipe = await data.Recipes.FirstOrDefaultAsync(r =>r.Id == id);
 
                 recipe.Name = model.Name;
                 recipe.Description = model.Description;
@@ -81,7 +85,7 @@ namespace BabyFoodApp.Services
             var recipe = new DetailsRecipeViewModel();
 
 
-            recipe = await data.AllReadonly<Recipe>()
+            recipe = await data.Recipes
                 .Where(r => r.IsActive == true && r.Id == id)
                 .Select(r => new DetailsRecipeViewModel()
                 {
@@ -100,13 +104,13 @@ namespace BabyFoodApp.Services
         }
         public async Task<bool> Exists(int id)
         {
-            return await data.AllReadonly<Recipe>()
+            return await data.Recipes
                 .AnyAsync(r => r.Id == id && r.IsActive);
         }
 
         public async Task<IEnumerable<MineViewModel>> AllRecipesByUserId(string userId)
         {
-            return await data.AllReadonly<Recipe>()
+            return await data.Recipes
                 .Where(r => r.UserId == userId && r.IsActive == true)
                    .Select(r => new MineViewModel()
                    {

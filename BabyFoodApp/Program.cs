@@ -26,7 +26,7 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddTransient<IRecipeService, RecipeService>();
-
+builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRepository, Repository>();
 
 

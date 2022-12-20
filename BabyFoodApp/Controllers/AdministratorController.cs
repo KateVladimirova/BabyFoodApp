@@ -1,6 +1,8 @@
-﻿using BabyFoodApp.Data;
+﻿using BabyFoodApp.Contracts;
+using BabyFoodApp.Data;
 using BabyFoodApp.Data.IdentityModels;
 using BabyFoodApp.Models.Recipe;
+using BabyFoodApp.Models.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,13 +16,17 @@ namespace BabyFoodApp.Controllers
         public readonly ApplicationDbContext data;
         public readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+        private readonly IUserService users;
         public AdministratorController(ApplicationDbContext _data,
             UserManager<User> _userManager,
-            SignInManager<User> _signInManager)
+            SignInManager<User> _signInManager,
+            IUserService _users)
         {
             data = _data;
             userManager = _userManager;
             signInManager = _signInManager;
+            users = _users;
+
         }
 
         //public string Index() =>
@@ -31,6 +37,22 @@ namespace BabyFoodApp.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<UserViewModel>>> GetAllUsers()
+        {
+            var usersList = await users.GetAllUsers();
+
+            return View(usersList);
+
+        }
+
+        [HttpGet]
+        public IActionResult UserDetails(UserViewModel data)
+        {
+            var user = users.UserDetails(data.Id);
+
+            return View(user);
+        }
         //[HttpGet]
         //public async Task<ActionResult> GetAllRecipesById()
         //{

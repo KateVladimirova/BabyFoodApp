@@ -1,6 +1,8 @@
-﻿using BabyFoodApp.Data;
+﻿using BabyFoodApp.Contracts;
+using BabyFoodApp.Data;
 using BabyFoodApp.Data.IdentityModels;
 using BabyFoodApp.Models;
+using BabyFoodApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +18,7 @@ namespace BabyFoodApp.Controllers
 
         public readonly ApplicationDbContext data;
 
+
         public UserController(
             UserManager<User> _userManager,
             SignInManager<User> _signInManager,
@@ -23,7 +26,6 @@ namespace BabyFoodApp.Controllers
         {
             userManager = _userManager;
             signInManager = _signInManager;
-            data = _data;
         }
 
         [HttpGet]
@@ -132,6 +134,7 @@ namespace BabyFoodApp.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Roles ="Administrator")]
         [HttpPost]
         public async Task<ActionResult> DeleteUser(string Id)
         {
@@ -155,6 +158,8 @@ namespace BabyFoodApp.Controllers
             return View(Id);
         }
 
+        
+
         public async Task<string> GetCurrentUser()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -165,19 +170,6 @@ namespace BabyFoodApp.Controllers
         }
 
 
-
-
-
-        //public async Task<int> GetCurrentUser(string Id)
-        //{
-        //    //var user = await data.UserClaims.FirstAsync(c => c.UserId == userId);
-
-        //    //return user;
-
-        //    var user = await userManager.FindByIdAsync(Id);
-
-        //    return user.Id;
-        //}
 
     }
 }
