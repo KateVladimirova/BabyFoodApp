@@ -28,6 +28,8 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IRecipeService, RecipeService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IRepository, Repository>();
+builder.Services.AddTransient<IAdministratorService, AdministratorService>();
+builder.Services.AddTransient<IBlogService, BlogService>();
 
 
 var app = builder.Build();
@@ -66,6 +68,9 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "administrator",
     pattern: "{controller=administrator}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "blog",
+    pattern: "{controller=blog}/{action=AllArticles}/{id?}");
 app.MapControllerRoute(
     name: "role",
     pattern: "{controller=role}/{action=Index}/{id?}");

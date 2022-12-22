@@ -1,0 +1,32 @@
+﻿@model ArticleViewModel
+@{
+    ViewBag.Title = "Article Details";
+}
+
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Content)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Content)
+        </dd>
+    </dl>
+</div>
+<div>
+    <button class="btn btn-warning"><a asp-action="Edit" asp-controller="blog" asp-route-id="@Model.Id">Edit</a></button>
+    <button class="btn btn-success"><a asp-action="AllArticlesByUserId" asp-controller="blog" >Back</a></button>
+    <form asp-controller="blog" asp-action="Delete" asp-route-id="@Model.Id" method="post">
+        <button type="submit" class="btn btn-danger" value="delete">Delete</button>
+    </form>
+</div>

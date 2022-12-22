@@ -5,7 +5,7 @@ namespace BabyFoodApp.Contracts
 {
     public interface IRecipeService
     {
-        Task<IEnumerable<AllRecipesViewModel>> All();
+        Task<IEnumerable<AllRecipesViewModel>> All(string? role);
         Task<int> Create(AddViewModel model, string userId);
         void Delete(int recipeId);
         Task Edit(int id, DetailsRecipeViewModel model);

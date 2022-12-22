@@ -37,9 +37,9 @@ namespace BabyFoodApp.Controllers
 
         //POST: RecipeController/All
         [HttpGet]
-        public async Task<IActionResult> All()
+        public async Task<IActionResult> All(string? role)
         {
-            var recipes = await recipeService.All();
+            var recipes = await recipeService.All(role);
 
             return View(recipes);
         }
@@ -85,11 +85,9 @@ namespace BabyFoodApp.Controllers
                 return View(model);
             }
 
-
             int id = await recipeService.Create(model, user.Id);
 
             return RedirectToAction("Mine", "Recipe");
-            //return RedirectToAction("Details", recipe.Id); //To see how to find the recipe
         }
 
 
@@ -133,6 +131,7 @@ namespace BabyFoodApp.Controllers
 
         [HttpPost]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, DetailsRecipeViewModel model)
         {
             if (await recipeService.Exists(id) == null)
@@ -145,63 +144,11 @@ namespace BabyFoodApp.Controllers
 
             return RedirectToAction(nameof(Details), new { model.Id });
 
-            //return View(recipe);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-
-        //public async Task<IActionResult> Edit(int id, DetailsRecipeViewModel model)
-        //{
-        //    var recipe = await data.Recipes.FindAsync(id);
-
-
-        //    if (recipe != null)
-        //    {
-        //        recipe.Id = model.Id;
-        //        recipe.Name = model.Name;
-        //        recipe.Description = model.Description;
-        //        recipe.CookingTime = model.CookingTime;
-        //        recipe.PreparationTime = model.PreparationTime;
-        //        recipe.TotalTime = model.TotalTime;
-        //        recipe.ImageUrl = model.ImageUrl;
-
-        //        await data.SaveChangesAsync();
-        //    };
-
-        //    return RedirectToAction(nameof(Details), new {model.Id});
-
-        //}
-
-
-        //[HttpPost]
-        //[Authorize]
-        //public async Task<IActionResult> Delete(int recipeId)
-        //{
-        //    var recipe = await data.Recipes
-        //        .FindAsync(recipeId);
-
-
-        //    if (recipe != null && recipe.IsActive == true)
-        //    {
-        //        data.Recipes.Remove(recipe);
-
-        //        //recipe.IsActive = false;
-
-        //        await data.SaveChangesAsync();
-
-
-        //        return RedirectToAction(nameof(Mine));
-        //    }
-        //    else
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return RedirectToAction(nameof(Mine));
-        //}
 
         [HttpPost]
+        [Authorize]
         public IActionResult Delete(int id)
         {
 
