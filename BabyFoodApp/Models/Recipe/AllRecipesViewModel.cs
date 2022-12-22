@@ -18,5 +18,6 @@ namespace BabyFoodApp.Models.Recipe
 
         [Required]
         public bool IsActive = true;
+
     }
 }

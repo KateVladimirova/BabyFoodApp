@@ -6,28 +6,49 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using BabyFoodApp.Data;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace BabyFoodApp.Services
 {
     public class RecipeService : IRecipeService
     {
         private readonly ApplicationDbContext data;
+        private readonly UserManager<User> userManager;
 
-        public RecipeService(ApplicationDbContext _data)
+        public RecipeService(ApplicationDbContext _data,
+            UserManager<User> _userManager)
         {
-            this.data = _data;
+            data = _data;
+            userManager = _userManager;
         }
 
         //To check if works
 
-        public async Task<IEnumerable<AllRecipesViewModel>> All()
+        public async Task<IEnumerable<AllRecipesViewModel>> All(string? role)
         {
+           if(role == "Administrator")
+            {
+                return await data.Recipes
+                .Select(r => new AllRecipesViewModel()
+                {
+                    Id = r.Id,
+                    Name = r.Name,
+                    ImageUrl = r.ImageUrl,
+                    IsActive = r.IsActive
+
+                })
+              .ToListAsync();
+            }
+
             return await data.Recipes
                 .Where(r => r.IsActive)
                  .Select(r => new AllRecipesViewModel()
                  {
+                     Id = r.Id,
                      Name = r.Name,
                      ImageUrl = r.ImageUrl,
+
                  })
                .ToListAsync();
         }

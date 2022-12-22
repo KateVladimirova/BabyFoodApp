@@ -1,0 +1,21 @@
+﻿@model IEnumerable<ArticleViewModel>
+
+@{
+    ViewBag.Title = "My Articles";
+}
+<h2 class="text-center">@ViewBag.Title</h2>
+<hr />
+
+@foreach (var data in Model)
+{
+    <div class="card text-center">
+        <div class="card-header">
+            Featured
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">@data.Title</h5>
+            <p class="card-text">@data.Content</p>
+            <a class="btn btn-primary" asp-action="Details" asp-controller="Blog" asp-route-id="@data.Id">Read more</a>
+        </div>
+    </div>
+}

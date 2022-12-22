@@ -15,7 +15,7 @@ namespace BabyFoodApp.Data
 
         public DbSet<Recipe> Recipes { get; set; } = null!;
 
-        //public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Article> Articles { get; set; }
 
         //public DbSet<RecipeParts> RecipeParts { get; set; } = null!;
     }

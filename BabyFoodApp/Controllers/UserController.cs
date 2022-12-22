@@ -105,7 +105,7 @@ namespace BabyFoodApp.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View();
             }
 
             IdentityUser user = await userManager.FindByNameAsync(model.Email);
@@ -122,7 +122,7 @@ namespace BabyFoodApp.Controllers
 
             ModelState.AddModelError("", "Invalid login");
 
-            return View(model);
+            return RedirectToAction("Login", "User"); ;
         }
 
         [HttpPost]

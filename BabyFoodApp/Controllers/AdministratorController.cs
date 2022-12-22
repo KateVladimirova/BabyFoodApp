@@ -3,10 +3,12 @@ using BabyFoodApp.Data;
 using BabyFoodApp.Data.IdentityModels;
 using BabyFoodApp.Models.Recipe;
 using BabyFoodApp.Models.User;
+using BabyFoodApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace BabyFoodApp.Controllers
 {
@@ -17,16 +19,23 @@ namespace BabyFoodApp.Controllers
         public readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
         private readonly IUserService users;
+        private readonly IAdministratorService admin;
+        private readonly IRecipeService recipeService;
+
+
         public AdministratorController(ApplicationDbContext _data,
             UserManager<User> _userManager,
             SignInManager<User> _signInManager,
-            IUserService _users)
+            IUserService _users,
+            IAdministratorService _admin,
+            IRecipeService _recipeService)
         {
             data = _data;
             userManager = _userManager;
             signInManager = _signInManager;
             users = _users;
-
+            admin = _admin;
+            recipeService = _recipeService;
         }
 
         //public string Index() =>
@@ -35,6 +44,18 @@ namespace BabyFoodApp.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllRecipes()
+        {
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentUser = await userManager.FindByIdAsync(currentUserId);
+            var roles = await userManager.GetRolesAsync(currentUser);
+
+            var recipes = await recipeService.All(roles.First());
+
+            return View(recipes);
         }
 
         [HttpGet]
@@ -53,34 +74,28 @@ namespace BabyFoodApp.Controllers
 
             return View(user);
         }
-        //[HttpGet]
-        //public async Task<ActionResult> GetAllRecipesById()
-        //{
-        //    var recipes = await data.Recipes
-        //       .Where(r => r.IsActive)
-        //        .Select(r => new AllRecipesViewModel()
-        //        {
-        //            Name = r.Name,
-        //            ImageUrl = r.ImageUrl,
-        //        })
-        //      .ToListAsync();
 
-        //    return View(recipes);
-        //}
+        [HttpPost]
+        public IActionResult ChangeStatus(int id, bool status)
+        {
+            admin.ChangeStatus(id, status);
+            return RedirectToAction(nameof(UserDetails), new { Id=User.FindFirstValue(ClaimTypes.NameIdentifier) });
+        }
 
-        //[HttpGet]
-        //public async Task<ActionResult> GetAllUsersById()
-        //{
-        //    var recipes = await data.Users
-        //       .FindAsync(User)
-        //        .Select(r => new AllRecipesViewModel()
-        //        {
+        [HttpPost]
+        public IActionResult ChangeRecipeStatus(int id, bool status)
+        {
+            admin.ChangeStatus(id, status);
+            return RedirectToAction(nameof(GetAllRecipes));
+        }
 
-        //        })
-        //      .ToListAsync();
+        [HttpPost]
+        public IActionResult DeleteUser(string id)
+        {
+            admin.DeleteUser(id);
+            return RedirectToAction(nameof(GetAllUsers));
+        }
 
-        //    return View(recipes);
-        //}
 
     }
 }

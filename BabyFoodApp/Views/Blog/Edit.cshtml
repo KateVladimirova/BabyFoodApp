@@ -1,0 +1,43 @@
+﻿@model ArticleViewModel
+
+@{
+    ViewBag.Title = "Edit article";
+}
+
+<h1 class="text-center">@ViewBag.Title</h1>
+<hr />
+<div class="row">
+    <div class="col-sm-12 offset-lg-2 col-lg-8 offset-xl-3 col-xl-6">
+        <form asp-controller="blog" asp-action="edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Content" class="control-label"></label>
+                <input asp-for="Content" class="form-control" />
+                <span asp-validation-for="Content" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+    <label asp-for="CreationDate" class="control-label"></label>
+                <input asp-for="CreationDate" class="form-control" />
+                <span asp-validation-for="CreationDate" class="text-danger"></span>
+            </div>
+            
+            <form asp-action="Edit" asp-controller="Blog" asp-route-id="@Model.Id" method="post">
+                <button class="btn btn-primary" type="submit"><a>Save</a></button>
+                <a asp-action="AllArticlesByUserId" class="btn btn-primary">Back</a>
+            </form>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
