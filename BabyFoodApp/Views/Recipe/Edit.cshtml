@@ -59,7 +59,7 @@
 
             <form asp-action="Edit" asp-controller="Recipe" asp-route-id="@Model.Id" method="post">
                 <button class="btn btn-primary" type="submit"><a>Save</a></button>
-                <a asp-action="Index" class="btn btn-primary">Back</a>
+                <button class="btn btn-success"><a onclick="history.go(-1);">Back</a></button>
             </form>
         </form>
     </div>

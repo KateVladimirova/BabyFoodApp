@@ -146,7 +146,6 @@ namespace BabyFoodApp.Controllers
 
         }
 
-
         [HttpPost]
         [Authorize]
         public IActionResult Delete(int id)
@@ -156,9 +155,6 @@ namespace BabyFoodApp.Controllers
 
             return RedirectToAction(nameof(Mine));
         }
-
-
-
         public async Task<IEnumerable<Age>> AgeFilter()
         {
             return await data.Recipes

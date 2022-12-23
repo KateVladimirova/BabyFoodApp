@@ -15,11 +15,11 @@
     <div class="card mb-3">
         @foreach (var recipe in @Model)
         {
-            <div class="card-body text-center">
-                <img class="card-img-center" style="widht: auto; height: 100px" src="@Html.DisplayFor(modelItem => recipe.ImageUrl)">
-
-                <h4>@Html.DisplayFor(modelItem => recipe.Name)</h4>
-
+            <div class="card" style="width: 18rem;">
+                <button type="button"><a type="button" asp-action="Details" asp-controller="Recipe" asp-route-id="@recipe.Id"><img class="card-img-top" src="@Html.DisplayFor(modelItem => recipe.ImageUrl)" alt="Card image cap"></a></button>
+                <div class="card-body">
+                    <a class="btn btn-primary" asp-action="Details" asp-controller="Recipe" asp-route-id="@recipe.Id">@Html.DisplayFor(modelItem => recipe.Name)</a>
+                </div>
             </div>
         }
     </div>
