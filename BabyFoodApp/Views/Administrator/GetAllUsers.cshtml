@@ -13,11 +13,14 @@
 }
 
 <span>Total count of users: @Model.Count</span>
+
+<button class="btn btn-success"><a onclick="history.go(-1);">Back</a></button>
+
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
             <td>Email</td>
-            <td>Id</td>            
+            <td>Id</td>
         </tr>
     </thead>
     <tbody>
@@ -26,7 +29,7 @@
             <tr>
                 <td>@user.Email</td>
                 <td>@user.Id</td>
-                <td><button type="button" class="btn btn-warning"><a asp-action="UserDetails" asp-controller="Administrator" asp-route-id="@user.Id">Details</a></button></td>
+                <td><button type="button" class="btn btn-warning"><a asp-action="UserDetails" asp-controller="Administrator" asp-route-id="@user.Id" style="color: white; text-decoration: none;">Details</a></button></td>
             </tr>
 
         }

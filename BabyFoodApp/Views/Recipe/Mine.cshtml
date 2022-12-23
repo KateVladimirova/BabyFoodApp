@@ -15,6 +15,19 @@
 
 @foreach (var item in Model)
 {
-    <a asp-action="Details" asp-controller="Recipe" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
-    <a asp-action="Details" asp-controller="Recipe" asp-route-id="@item.Id"><img style="width: auto; height: 100px" src="@Html.DisplayFor(modelItem => item.ImageUrl)"></a>
+@*    <div class="col-4md-4">
+        <div class="card mb-3">*@
+            @foreach (var recipe in @Model)
+            {
+                <div class="card" style="width: 18rem;">
+                    <button type="button"><a type="button" asp-action="Details" asp-controller="Recipe" asp-route-id="@recipe.Id"><img class="card-img-top" src="@Html.DisplayFor(modelItem => recipe.ImageUrl)" alt="Card image cap"></a></button>
+                    <div class="card-body">
+                        <a class="btn btn-primary" asp-action="Details" asp-controller="Recipe" asp-route-id="@recipe.Id">@Html.DisplayFor(modelItem => recipe.Name)</a>
+                    </div>
+                </div>
+            }
+       @* </div>
+    </div>*@
+   @* <a asp-action="Details" asp-controller="Recipe" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Name)</a>
+@*    <asp-action="Details" asp-controller="Recipe" asp-route-id="@item.Id"><img style="width: auto; height: 100px" src="@Html.DisplayFor(modelItem => item.ImageUrl)"></a>*@
 }

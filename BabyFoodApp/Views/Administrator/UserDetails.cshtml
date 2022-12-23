@@ -13,6 +13,8 @@
 <br />
 <span>Total count of recipes: @Model.UserRecipes.Count</span>
 <br />
+<button class="btn btn-success"><a onclick="history.go(-1);">Back</a></button>
+
 <form asp-action="DeleteUser" asp-controller="Administrator" asp-route-id="@Model.Id" method="post">
     <button type="submit" class="btn btn-danger mb-2" onclick="Are you sure?">Delete User</button>
 </form>
